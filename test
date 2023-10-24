@@ -1,0 +1,29 @@
+.data
+message: .asciiz "The concatenated string is: "
+integer: .space 11   # Reserve 11 bytes for the integer string (maximum of 10 digits + null terminator)
+
+.text
+.globl main
+main:
+  # Step 1: Load the integer value into a register
+  li $t0, 42
+
+  # Step 2: Load the address of the message string into a register
+  la $a0, message
+
+  # Step 3: Convert the integer value to a string representation
+
+  # Step 4: Store the string representation of the integer in memory
+
+  # Step 5: Concatenate the message string and the integer string
+  la $t1, integer
+  la $t2, message
+  sw $t1, 0($t2)   # Store the address of the integer string after the message string
+
+  # Step 6: Print the concatenated string
+  li $v0, 4         # System call number for printing a string
+  syscall
+
+  # Exit the program
+  li $v0, 10        # System call number for exit
+  syscall

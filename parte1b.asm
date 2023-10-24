@@ -1,0 +1,94 @@
+.data
+	prompt1: .asciiz "Por favor ingrese el primer entero:"
+	prompt2: .asciiz "Por favor ingrese el segundo entero:"
+	message2: .asciiz "El nuevo segundo entero es: "
+	even_message: .asciiz "El numero es par: "
+	odd_message:  .asciiz "El numero es Impar: "
+	newline: .asciiz "\n"    
+	
+.text
+	Main:       # save first number
+		li $v0 4
+		la $a0, prompt1
+		syscall	
+		li $v0 5
+		syscall     
+		move $t0, $v0 
+		
+         	           # save second number		
+		li $v0 4
+		la $a0, prompt2
+		syscall		
+		li $v0 5
+		syscall        	       
+		move $t1, $v0 
+		
+		#Call function calculate
+		move $a0, $t0
+		move $a1, $t1
+		jal Calculate
+		move $s0, $v0 
+			
+		
+		andi $s1, $s0, 1  
+		beqz $s1, Even   # branch equal to zero
+		
+		j Odd
+	Calculate:
+		sub $v0, $a0, $a1
+		abs $v0, $v0
+		jr $ra
+	Even:	        	
+		li $v0,4
+		la $a0, even_message	
+		syscall
+		
+        		li $v0, 1         
+        		move $a0, $s0        
+       		syscall
+
+    		la $a0, newline    
+    		li $v0, 4         
+   		syscall          		
+       		       		       		
+       		abs $s0, $s0
+       		add $s0, $s0,$t0
+       		
+       		li $v0,4
+		la $a0, message2
+		syscall
+		
+        		li $v0, 1         
+        		move $a0, $s0        
+       		syscall  
+       		
+       		j Exit
+	Odd:
+		li $v0, 4
+		la $a0, odd_message
+		syscall
+		
+        		li $v0, 1         
+        		move $a0, $s0        
+       		syscall
+       		
+    		la $a0, newline    
+    		li $v0, 4         
+   		syscall           
+
+      	
+       		abs $s0, $s0
+       		add $s0, $s0,$t1
+       		
+       		li $v0,4
+		la $a0, message2
+		syscall
+		
+        		li $v0, 1         
+        		move $a0, $s0        
+       		syscall  
+			
+		j Exit
+	Exit: 
+		li $v0, 10
+		syscall

@@ -1,0 +1,16 @@
+.text
+    main:
+        # Load integer value into integer register
+        li $t0, 2
+
+        # Convert integer to floating-point
+        mtc1 $t0, $f0
+        cvt.s.w $f0, $f0
+
+        # Rest of the code..
+            li $v0, 2
+            mov.s $f12, $f0
+            syscall
+            
+            mtc1 $s0, $f1
+    	add.s $f0, $f0, $f1
